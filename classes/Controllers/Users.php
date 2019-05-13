@@ -69,4 +69,12 @@ class Users extends Controller
             $this->error('Error updating user', [ 'user' => $user ]);
         }
     }
+
+    public function getUserEmail(ObjsUser $user)
+    {
+        $reflection = new \ReflectionClass($user->getProfile());
+        $property = $reflection->getProperty('email');
+        $property->setAccessible(true);
+        return $property->getValue($user->getProfile());
+    }
 }
