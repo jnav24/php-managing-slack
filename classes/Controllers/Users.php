@@ -2,21 +2,10 @@
 
 namespace Src\Controllers;
 
-use JoliCode\Slack\ClientFactory;
-use Src\Factories\ClientFactory as ClientLegacyFactory;
 use JoliCode\Slack\Api\Model\ObjsUser;
 
-class Users
+class Users extends Controller
 {
-    private $client;
-    private $clientLegacy;
-
-    public function __construct()
-    {
-        $this->client = ClientFactory::create(getenv('SLACK_ACCESS_TOKEN'));
-        $this->clientLegacy = ClientLegacyFactory::create(getenv('SLACK_LEGACY_TOKEN'));
-    }
-
     /**
      * @param array $params {
      *      limit integer
