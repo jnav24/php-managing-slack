@@ -3,15 +3,18 @@
 require_once __DIR__ . '/../bootstrap.php';
 
 use JoliCode\Slack\ClientFactory;
+use Src\Factories\ClientFactory as ClientLegacyFactory;
 use JoliCode\Slack\Api\Model\ObjsUser;
 
 class Users
 {
     private $client;
+    private $clientLegacy;
 
     public function __construct()
     {
         $this->client = ClientFactory::create(getenv('SLACK_ACCESS_TOKEN'));
+        $this->clientLegacy = ClientLegacyFactory::create(getenv('SLACK_LEGACY_TOKEN'));
     }
 
     /**
@@ -62,6 +65,19 @@ class Users
         return false;
     }
 
-    public function setUserAsDeactivated()
-    {}
+    /**
+     * Set the user account as deactivated
+     *
+     * @param ObjsUser $user
+     */
+    public function setUserAsDeactivated(ObjsUser $user)
+    {
+        $response = $this->clientLegacy->usersAdminInactive([
+            'user' => $user->getId(),
+        ]);
+
+        if (!$response->getOk()) {
+            // log error
+        }
+    }
 }
