@@ -11,7 +11,7 @@ class Users
 
     public function __construct()
     {
-        $this->client = ClientFactory::create(getenv('OAUTH_ACCESS_TOKEN'));
+        $this->client = ClientFactory::create(getenv('SLACK_ACCESS_TOKEN'));
     }
 
     /**

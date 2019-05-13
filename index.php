@@ -4,7 +4,7 @@ require_once(__DIR__ . '/bootstrap.php');
 use JoliCode\Slack\Api\Model\ObjsUser;
 use JoliCode\Slack\ClientFactory;
 
-$client = ClientFactory::create(getenv('OAUTH_ACCESS_TOKEN'));
+$client = ClientFactory::create(getenv('SLACK_ACCESS_TOKEN'));
 /** @var ObjsUser $users */
 $results = [];
 $page = 1;

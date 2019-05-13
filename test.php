@@ -4,10 +4,16 @@ require_once(__DIR__ . '/bootstrap.php');
 use JoliCode\Slack\Api\Model\ObjsUser;
 use JoliCode\Slack\ClientFactory;
 
-$client = ClientFactory::create(getenv('OAUTH_ACCESS_TOKEN'));
+$client = ClientFactory::create(getenv('SLACK_ACCESS_TOKEN'));
 /** @var ObjsUser $users */
 $results = [];
-$try = 4;
+$try = 5;
+
+$testClient = \Src\Factories\ClientFactory::create(getenv('SLACK_LEGACY_TOKEN'));
+var_dump($testClient->usersAdminInactive([
+    'user' => '123456',
+]));
+die();
 
 if ($try === 1) {
     $response = $client->usersInfo([
@@ -39,4 +45,16 @@ if ($try === 4) {
     ]);
     $obj = json_decode(json_encode($response));
     var_dump($obj->billable_info->{$id}->billing_active);
+}
+
+if ($try === 5) {
+    $ch = curl_init("http://www.example.com/");
+    $fp = fopen("example_homepage.txt", "w");
+
+    curl_setopt($ch, CURLOPT_FILE, $fp);
+    curl_setopt($ch, CURLOPT_HEADER, 0);
+
+    curl_exec($ch);
+    curl_close($ch);
+    fclose($fp);
 }

@@ -1,4 +1,9 @@
 {
+  "autoload": {
+    "psr-4": {
+      "Src\\": "classes/"
+    }
+  },
   "require": {
     "php-http/curl-client": "^1.7",
     "guzzlehttp/psr7": "^1.5",
