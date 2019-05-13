@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/../bootstrap.php';
+namespace Src\Controllers;
 
 use JoliCode\Slack\ClientFactory;
 use Src\Factories\ClientFactory as ClientLegacyFactory;

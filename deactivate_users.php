@@ -1,8 +1,8 @@
 <?php
 
-require_once __DIR__ . '/classes/Users.php';
+require_once __DIR__ . '/bootstrap.php';
 
-$usersObj = new Users;
+$usersObj = new Src\Controllers\Users;
 $users = $usersObj->getAllUsers([ 'limit' => 5 ]);
 
 $markedForDeletion = array_filter($users, function($user) use ($usersObj) {
@@ -10,3 +10,7 @@ $markedForDeletion = array_filter($users, function($user) use ($usersObj) {
 });
 
 var_dump($markedForDeletion);
+
+if (!empty($markedForDeletion)) {
+//    $usersObj->setUserAsDeactivated($markedForDeletion[0]);
+}
