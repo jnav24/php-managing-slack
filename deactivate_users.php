@@ -2,15 +2,16 @@
 
 require_once __DIR__ . '/bootstrap.php';
 
+use JoliCode\Slack\Api\Model\ObjsUser;
+
 $usersObj = new Src\Controllers\Users;
-$users = $usersObj->getAllUsers([ 'limit' => 5 ]);
+$users = $usersObj->getAllUsers([ 'limit' => 6 ]);
+$whitelist = [];
 
-$markedForDeletion = array_filter($users, function($user) use ($usersObj) {
-    return $usersObj->isUserAMember($user) && !$usersObj->isBillingActive($user);
-});
+array_map(function(ObjsUser $user) use ($usersObj, $whitelist) {
+    $email = $usersObj->getUserEmail($user);
 
-var_dump($markedForDeletion);
-
-if (!empty($markedForDeletion)) {
-//    $usersObj->setUserAsDeactivated($markedForDeletion[0]);
-}
+    if (!$user->getDeleted() && $usersObj->isUserAMember($user) && !$usersObj->isBillingActive($user) && !in_array($email, $whitelist)) {
+        $usersObj->setUserAsDeactivated($user);
+    }
+}, $users);
