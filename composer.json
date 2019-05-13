@@ -8,6 +8,7 @@
     "php-http/curl-client": "^1.7",
     "guzzlehttp/psr7": "^1.5",
     "jolicode/slack-php-api": "^1.2",
-    "vlucas/phpdotenv": "^3.3"
+    "vlucas/phpdotenv": "^3.3",
+    "monolog/monolog": "^1.24"
   }
 }
