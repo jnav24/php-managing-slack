@@ -66,7 +66,7 @@ class Users extends Controller
         ]);
 
         if (!$response->getOk()) {
-            // log error
+            $this->error('Error updating user', [ 'user' => $user ]);
         }
     }
 }
