@@ -6,6 +6,8 @@ use JoliCode\Slack\Api\Model\ObjsUser;
 
 class Users extends Controller
 {
+    private $responseMetaData;
+
     /**
      * @param array $params {
      *      limit integer
@@ -15,7 +17,14 @@ class Users extends Controller
      */
     public function getAllUsers(array $params = [])
     {
-        return array_filter($this->client->usersList($params)->getMembers(), function(ObjsUser $user) {
+        $response = $this->client->usersList($params);
+
+        if (!$response->getOk()) {
+            return [];
+        }
+
+        $this->responseMetaData = $response->getResponseMetadata();
+        return array_filter($response->getMembers(), function(ObjsUser $user) {
             return $user->getName() !== 'slackbot';
         });
     }
@@ -61,6 +70,7 @@ class Users extends Controller
      */
     public function setUserAsDeactivated(ObjsUser $user)
     {
+        $this->debug('User to be deleted', [ 'user' => $user->getRealName(), 'email' => $this->getUserEmail($user) ]);
         $response = $this->clientLegacy->usersAdminInactive([
             'user' => $user->getId(),
         ]);
@@ -76,5 +86,18 @@ class Users extends Controller
         $property = $reflection->getProperty('email');
         $property->setAccessible(true);
         return $property->getValue($user->getProfile());
+    }
+
+    public function getResponseMetaData()
+    {
+        return $this->responseMetaData;
+    }
+
+    public function getNextCursor()
+    {
+        $reflection = new \ReflectionClass($this->getResponseMetaData());
+        $property = $reflection->getProperty('nextCursor');
+        $property->setAccessible(true);
+        return $property->getValue($this->getResponseMetaData());
     }
 }
