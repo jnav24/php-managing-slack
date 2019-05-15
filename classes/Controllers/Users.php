@@ -10,7 +10,8 @@ class Users extends Controller
 
     /**
      * @param array $params {
-     *      limit integer
+     *      cursor string; represents the next offset of results pagination
+     *      limit integer; returns the amount back from results
      *      include_locale bool
      * }
      * @return array|\JoliCode\Slack\Api\Model\ObjsUser[]|null
@@ -80,6 +81,12 @@ class Users extends Controller
         }
     }
 
+    /**
+     * Gets the user's email using Reflection
+     *
+     * @param ObjsUser $user
+     * @return string
+     */
     public function getUserEmail(ObjsUser $user)
     {
         $reflection = new \ReflectionClass($user->getProfile());
@@ -88,11 +95,21 @@ class Users extends Controller
         return $property->getValue($user->getProfile());
     }
 
+    /**
+     * Gets the meta data response object from user list object
+     *
+     * @return Object
+     */
     public function getResponseMetaData()
     {
         return $this->responseMetaData;
     }
 
+    /**
+     * Get the cursor value which represents the next page in the pagination to retrieve results
+     *
+     * @return string
+     */
     public function getNextCursor()
     {
         $reflection = new \ReflectionClass($this->getResponseMetaData());
