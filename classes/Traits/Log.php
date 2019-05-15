@@ -34,7 +34,7 @@ trait Log
         $this->error->error($message, $details);
     }
 
-    protected function info(string $message, array $details = [])
+    public function info(string $message, array $details = [])
     {
         $this->info->info($message, $details);
     }
